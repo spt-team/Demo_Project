@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Team_Member_Name__c</fullName>
+    <deleteConstraint>Restrict</deleteConstraint>
+    <inlineHelpText>Give the name of the member</inlineHelpText>
+    <label>Team Member Name</label>
+    <referenceTo>Contact</referenceTo>
+    <relationshipLabel>Penalty Trackers</relationshipLabel>
+    <relationshipName>Penalty_Trackers</relationshipName>
+    <required>false</required>
+    <trackTrending>false</trackTrending>
+    <type>Lookup</type>
+</CustomField>
