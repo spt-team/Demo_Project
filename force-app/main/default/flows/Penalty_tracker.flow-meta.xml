@@ -2,12 +2,80 @@
 <Flow xmlns="http://soap.sforce.com/2006/04/metadata">
     <apiVersion>64.0</apiVersion>
     <decisions>
+        <name>Check_for_Duplicate_Roles</name>
+        <label>Check for Duplicate Roles</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <defaultConnector>
+            <targetReference>Duplicate_Name_selected</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
+        <rules>
+            <name>ValidSelection</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>Team_Member_Names.selectedChoiceValues</leftValueReference>
+                <operator>NotEqualTo</operator>
+                <rightValue>
+                    <elementReference>Team_Lead_Name.selectedChoiceValues</elementReference>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>Team_Member_Names.selectedChoiceValues</leftValueReference>
+                <operator>NotEqualTo</operator>
+                <rightValue>
+                    <elementReference>Peer_Reviewer.selectedChoiceValues</elementReference>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>Team_Lead_Name.selectedChoiceValues</leftValueReference>
+                <operator>NotEqualTo</operator>
+                <rightValue>
+                    <elementReference>Peer_Reviewer.selectedChoiceValues</elementReference>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Who_to_Create_Record_For</targetReference>
+            </connector>
+            <label>ValidSelection</label>
+        </rules>
+        <rules>
+            <name>If_Empty</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>Team_Member_Names.selectedChoiceValues</leftValueReference>
+                <operator>IsBlank</operator>
+                <rightValue>
+                    <booleanValue>true</booleanValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>Team_Lead_Name.selectedChoiceValues</leftValueReference>
+                <operator>IsBlank</operator>
+                <rightValue>
+                    <booleanValue>true</booleanValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>Peer_Reviewer.selectedChoiceValues</leftValueReference>
+                <operator>IsBlank</operator>
+                <rightValue>
+                    <booleanValue>true</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Error_creating_record</targetReference>
+            </connector>
+            <label>If Empty</label>
+        </rules>
+    </decisions>
+    <decisions>
         <name>Who_to_Create_Record_For</name>
         <label>Who to Create Record For?</label>
         <locationX>0</locationX>
         <locationY>0</locationY>
         <defaultConnector>
-            <targetReference>Error_creating_record</targetReference>
+            <targetReference>Success_Message</targetReference>
         </defaultConnector>
         <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
         <rules>
@@ -332,10 +400,6 @@
         <connector>
             <targetReference>Success_Message</targetReference>
         </connector>
-        <faultConnector>
-            <isGoTo>true</isGoTo>
-            <targetReference>Error_Display_Reviewer</targetReference>
-        </faultConnector>
         <inputAssignments>
             <field>Client_Name__c</field>
             <value>
@@ -390,10 +454,6 @@
         <connector>
             <targetReference>Create_Team_Lead_Record3</targetReference>
         </connector>
-        <faultConnector>
-            <isGoTo>true</isGoTo>
-            <targetReference>Error_Display_Reviewer</targetReference>
-        </faultConnector>
         <inputAssignments>
             <field>Client_Name__c</field>
             <value>
@@ -448,10 +508,6 @@
         <connector>
             <targetReference>Success_Message</targetReference>
         </connector>
-        <faultConnector>
-            <isGoTo>true</isGoTo>
-            <targetReference>Error_Display_TeamLead</targetReference>
-        </faultConnector>
         <inputAssignments>
             <field>Client_Name__c</field>
             <value>
@@ -563,10 +619,6 @@
         <connector>
             <targetReference>Success_Message</targetReference>
         </connector>
-        <faultConnector>
-            <isGoTo>true</isGoTo>
-            <targetReference>Error_Display_TeamLead</targetReference>
-        </faultConnector>
         <inputAssignments>
             <field>Client_Name__c</field>
             <value>
@@ -621,10 +673,6 @@
         <connector>
             <targetReference>Success_Message</targetReference>
         </connector>
-        <faultConnector>
-            <isGoTo>true</isGoTo>
-            <targetReference>Error_Display_TeamLead</targetReference>
-        </faultConnector>
         <inputAssignments>
             <field>Client_Name__c</field>
             <value>
@@ -736,10 +784,6 @@
         <connector>
             <targetReference>Success_Message</targetReference>
         </connector>
-        <faultConnector>
-            <isGoTo>true</isGoTo>
-            <targetReference>Error_Display</targetReference>
-        </faultConnector>
         <inputAssignments>
             <field>Client_Name__c</field>
             <value>
@@ -794,10 +838,6 @@
         <connector>
             <targetReference>Create_Team_Lead_Record2</targetReference>
         </connector>
-        <faultConnector>
-            <isGoTo>true</isGoTo>
-            <targetReference>Error_Display</targetReference>
-        </faultConnector>
         <inputAssignments>
             <field>Client_Name__c</field>
             <value>
@@ -852,10 +892,6 @@
         <connector>
             <targetReference>Success_Message</targetReference>
         </connector>
-        <faultConnector>
-            <isGoTo>true</isGoTo>
-            <targetReference>Error_Display_Reviewer</targetReference>
-        </faultConnector>
         <inputAssignments>
             <field>Client_Name__c</field>
             <value>
@@ -910,10 +946,6 @@
         <connector>
             <targetReference>Create_Peer_Reviewer_Record1</targetReference>
         </connector>
-        <faultConnector>
-            <isGoTo>true</isGoTo>
-            <targetReference>Error_Display</targetReference>
-        </faultConnector>
         <inputAssignments>
             <field>Client_Name__c</field>
             <value>
@@ -960,6 +992,22 @@
         <storeOutputAutomatically>true</storeOutputAutomatically>
     </recordCreates>
     <screens>
+        <name>Duplicate_Name_selected</name>
+        <label>Duplicate Name selected</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <allowBack>true</allowBack>
+        <allowFinish>true</allowFinish>
+        <allowPause>true</allowPause>
+        <fields>
+            <name>DuplicateErrorMessage</name>
+            <fieldText>&lt;p&gt;You’ve selected the same person for multiple roles.&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;Each of the following roles must be assigned to a different person:&lt;/p&gt;&lt;p&gt;- Team Member&lt;/p&gt;&lt;p&gt;- Team Lead&lt;/p&gt;&lt;p&gt;- Peer Reviewer&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;Please go back and update your selections.&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;</fieldText>
+            <fieldType>DisplayText</fieldType>
+        </fields>
+        <showFooter>true</showFooter>
+        <showHeader>true</showHeader>
+    </screens>
+    <screens>
         <name>Error_creating_record</name>
         <label>Error creating record</label>
         <locationX>0</locationX>
@@ -967,10 +1015,6 @@
         <allowBack>true</allowBack>
         <allowFinish>true</allowFinish>
         <allowPause>true</allowPause>
-        <connector>
-            <isGoTo>true</isGoTo>
-            <targetReference>Penalty_Tracker_Input</targetReference>
-        </connector>
         <fields>
             <name>Error_message</name>
             <fieldText>&lt;p&gt;Couldn’t create a record. Please select at least one lookup: Team Member, Team Lead, or Peer Reviewer.&lt;/p&gt;</fieldText>
@@ -1036,7 +1080,7 @@
         <allowFinish>true</allowFinish>
         <allowPause>true</allowPause>
         <connector>
-            <targetReference>Who_to_Create_Record_For</targetReference>
+            <targetReference>Check_for_Duplicate_Roles</targetReference>
         </connector>
         <fields>
             <fieldType>ObjectProvided</fieldType>
@@ -1141,7 +1185,7 @@
             <targetReference>Penalty_Tracker_Input</targetReference>
         </connector>
     </start>
-    <status>Draft</status>
+    <status>Active</status>
     <variables>
         <name>PenaltyPoints</name>
         <dataType>Number</dataType>
