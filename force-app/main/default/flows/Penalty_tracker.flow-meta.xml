@@ -2,16 +2,43 @@
 <Flow xmlns="http://soap.sforce.com/2006/04/metadata">
     <apiVersion>64.0</apiVersion>
     <decisions>
+        <description>This decision checks whether all selected names are unique and not empty. If any names are duplicated, an error will be shown. At least one name field must be selected.</description>
         <name>Who_to_Create_Record_For</name>
         <label>Who to Create Record For?</label>
         <locationX>0</locationX>
         <locationY>0</locationY>
-        <defaultConnector>
-            <targetReference>Error_creating_record</targetReference>
-        </defaultConnector>
         <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
         <rules>
-            <name>Team_Lead_Member</name>
+            <name>Peer_Reviewer_record</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>Peer_Reviewer.selectedChoiceValues</leftValueReference>
+                <operator>IsBlank</operator>
+                <rightValue>
+                    <booleanValue>false</booleanValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>Team_Lead_Name.selectedChoiceValues</leftValueReference>
+                <operator>IsBlank</operator>
+                <rightValue>
+                    <booleanValue>true</booleanValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>Team_Member_Names.selectedChoiceValues</leftValueReference>
+                <operator>IsBlank</operator>
+                <rightValue>
+                    <booleanValue>true</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Peer_Reviewer_Record1</targetReference>
+            </connector>
+            <label>Peer Reviewer</label>
+        </rules>
+        <rules>
+            <name>Team_Member</name>
             <conditionLogic>and</conditionLogic>
             <conditions>
                 <leftValueReference>Team_Member_Names.selectedChoiceValues</leftValueReference>
@@ -21,7 +48,160 @@
                 </rightValue>
             </conditions>
             <conditions>
+                <leftValueReference>Peer_Reviewer.selectedChoiceValues</leftValueReference>
+                <operator>IsBlank</operator>
+                <rightValue>
+                    <booleanValue>true</booleanValue>
+                </rightValue>
+            </conditions>
+            <conditions>
                 <leftValueReference>Team_Lead_Name.selectedChoiceValues</leftValueReference>
+                <operator>IsBlank</operator>
+                <rightValue>
+                    <booleanValue>true</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Create_Team_Member_Record1</targetReference>
+            </connector>
+            <label>Team Member</label>
+        </rules>
+        <rules>
+            <name>Team_Lead1</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>Team_Lead_Name.selectedChoiceValues</leftValueReference>
+                <operator>IsBlank</operator>
+                <rightValue>
+                    <booleanValue>false</booleanValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>Peer_Reviewer.selectedChoiceValues</leftValueReference>
+                <operator>IsBlank</operator>
+                <rightValue>
+                    <booleanValue>true</booleanValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>Team_Member_Names.selectedChoiceValues</leftValueReference>
+                <operator>IsBlank</operator>
+                <rightValue>
+                    <booleanValue>true</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Create_Team_Lead</targetReference>
+            </connector>
+            <label>Team Lead</label>
+        </rules>
+        <rules>
+            <name>Team_Lead_Member_and_Reviewer_Is_Empty</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>Team_Lead_Name.selectedChoiceValues</leftValueReference>
+                <operator>IsBlank</operator>
+                <rightValue>
+                    <booleanValue>true</booleanValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>Team_Member_Names.selectedChoiceValues</leftValueReference>
+                <operator>IsBlank</operator>
+                <rightValue>
+                    <booleanValue>true</booleanValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>Peer_Reviewer.selectedChoiceValues</leftValueReference>
+                <operator>IsBlank</operator>
+                <rightValue>
+                    <booleanValue>true</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Error_creating_record</targetReference>
+            </connector>
+            <label>Team Lead Member and Reviewer Is Empty</label>
+        </rules>
+        <rules>
+            <name>Team_Member_Invalid_outcome</name>
+            <conditionLogic>or</conditionLogic>
+            <conditions>
+                <leftValueReference>Team_Member_Names.selectedChoiceValues</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <elementReference>Peer_Reviewer.selectedChoiceValues</elementReference>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>Team_Member_Names.selectedChoiceValues</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <elementReference>Team_Lead_Name.selectedChoiceValues</elementReference>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Duplicate_Name_selected</targetReference>
+            </connector>
+            <label>Team Member Invalid outcome</label>
+        </rules>
+        <rules>
+            <name>Team_Lead_Invalid_outcome</name>
+            <conditionLogic>or</conditionLogic>
+            <conditions>
+                <leftValueReference>Team_Lead_Name.selectedChoiceValues</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <elementReference>Peer_Reviewer.selectedChoiceValues</elementReference>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>Team_Lead_Name.selectedChoiceValues</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <elementReference>Team_Member_Names.selectedChoiceValues</elementReference>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Duplicate_Name_selected1</targetReference>
+            </connector>
+            <label>Team Lead Invalid outcome</label>
+        </rules>
+        <rules>
+            <name>Peer_Review_Invalid_outcome</name>
+            <conditionLogic>or</conditionLogic>
+            <conditions>
+                <leftValueReference>Peer_Reviewer.selectedChoiceValues</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <elementReference>Team_Lead_Name.selectedChoiceValues</elementReference>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>Peer_Reviewer.selectedChoiceValues</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <elementReference>Team_Member_Names.selectedChoiceValues</elementReference>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Duplicate_Name_selected2</targetReference>
+            </connector>
+            <label>Peer Review Invalid outcome</label>
+        </rules>
+        <rules>
+            <name>Team_Lead_Member_and_Reviewer1</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>Team_Lead_Name.selectedChoiceValues</leftValueReference>
+                <operator>IsBlank</operator>
+                <rightValue>
+                    <booleanValue>false</booleanValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>Team_Member_Names.selectedChoiceValues</leftValueReference>
                 <operator>IsBlank</operator>
                 <rightValue>
                     <booleanValue>false</booleanValue>
@@ -35,7 +215,7 @@
                 </rightValue>
             </conditions>
             <connector>
-                <targetReference>Create_Team_Member_Record</targetReference>
+                <targetReference>Create_Team_Lead_Record</targetReference>
             </connector>
             <label>Team Lead Member and Reviewer</label>
         </rules>
@@ -126,86 +306,6 @@
             </connector>
             <label>Team Lead and Peer Reviewer</label>
         </rules>
-        <rules>
-            <name>Team_Lead</name>
-            <conditionLogic>and</conditionLogic>
-            <conditions>
-                <leftValueReference>Team_Member_Names.selectedChoiceValues</leftValueReference>
-                <operator>IsBlank</operator>
-                <rightValue>
-                    <booleanValue>true</booleanValue>
-                </rightValue>
-            </conditions>
-            <conditions>
-                <leftValueReference>Team_Lead_Name.selectedChoiceValues</leftValueReference>
-                <operator>IsBlank</operator>
-                <rightValue>
-                    <booleanValue>false</booleanValue>
-                </rightValue>
-            </conditions>
-            <connector>
-                <targetReference>Create_Team_Lead</targetReference>
-            </connector>
-            <label>Team Lead</label>
-        </rules>
-        <rules>
-            <name>Peer_Reviewer_record</name>
-            <conditionLogic>and</conditionLogic>
-            <conditions>
-                <leftValueReference>Peer_Reviewer.selectedChoiceValues</leftValueReference>
-                <operator>IsBlank</operator>
-                <rightValue>
-                    <booleanValue>false</booleanValue>
-                </rightValue>
-            </conditions>
-            <conditions>
-                <leftValueReference>Team_Lead_Name.selectedChoiceValues</leftValueReference>
-                <operator>IsBlank</operator>
-                <rightValue>
-                    <booleanValue>true</booleanValue>
-                </rightValue>
-            </conditions>
-            <conditions>
-                <leftValueReference>Team_Member_Names.selectedChoiceValues</leftValueReference>
-                <operator>IsBlank</operator>
-                <rightValue>
-                    <booleanValue>true</booleanValue>
-                </rightValue>
-            </conditions>
-            <connector>
-                <targetReference>Peer_Reviewer_Record1</targetReference>
-            </connector>
-            <label>Peer Reviewer</label>
-        </rules>
-        <rules>
-            <name>Team_Member</name>
-            <conditionLogic>and</conditionLogic>
-            <conditions>
-                <leftValueReference>Team_Member_Names.selectedChoiceValues</leftValueReference>
-                <operator>IsBlank</operator>
-                <rightValue>
-                    <booleanValue>false</booleanValue>
-                </rightValue>
-            </conditions>
-            <conditions>
-                <leftValueReference>Peer_Reviewer.selectedChoiceValues</leftValueReference>
-                <operator>IsBlank</operator>
-                <rightValue>
-                    <booleanValue>true</booleanValue>
-                </rightValue>
-            </conditions>
-            <conditions>
-                <leftValueReference>Team_Lead_Name.selectedChoiceValues</leftValueReference>
-                <operator>IsBlank</operator>
-                <rightValue>
-                    <booleanValue>true</booleanValue>
-                </rightValue>
-            </conditions>
-            <connector>
-                <targetReference>Create_Team_Member_Record1</targetReference>
-            </connector>
-            <label>Team Member</label>
-        </rules>
     </decisions>
     <dynamicChoiceSets>
         <name>SPT_ClientName</name>
@@ -273,10 +373,12 @@
         <locationX>0</locationX>
         <locationY>0</locationY>
         <connector>
+            <isGoTo>true</isGoTo>
             <targetReference>Success_Message</targetReference>
         </connector>
         <faultConnector>
-            <targetReference>Error_Display_Reviewer</targetReference>
+            <isGoTo>true</isGoTo>
+            <targetReference>Error_creating_peer_reviewer</targetReference>
         </faultConnector>
         <inputAssignments>
             <field>Client_Name__c</field>
@@ -330,11 +432,12 @@
         <locationX>0</locationX>
         <locationY>0</locationY>
         <connector>
+            <isGoTo>true</isGoTo>
             <targetReference>Success_Message</targetReference>
         </connector>
         <faultConnector>
             <isGoTo>true</isGoTo>
-            <targetReference>Error_Display_Reviewer</targetReference>
+            <targetReference>Error_creating_peer_reviewer</targetReference>
         </faultConnector>
         <inputAssignments>
             <field>Client_Name__c</field>
@@ -392,7 +495,7 @@
         </connector>
         <faultConnector>
             <isGoTo>true</isGoTo>
-            <targetReference>Error_Display_Reviewer</targetReference>
+            <targetReference>Error_creating_peer_reviewer</targetReference>
         </faultConnector>
         <inputAssignments>
             <field>Client_Name__c</field>
@@ -446,11 +549,11 @@
         <locationX>0</locationX>
         <locationY>0</locationY>
         <connector>
+            <isGoTo>true</isGoTo>
             <targetReference>Success_Message</targetReference>
         </connector>
         <faultConnector>
-            <isGoTo>true</isGoTo>
-            <targetReference>Error_Display_TeamLead</targetReference>
+            <targetReference>Error_Creating_Team_Lead</targetReference>
         </faultConnector>
         <inputAssignments>
             <field>Client_Name__c</field>
@@ -504,10 +607,11 @@
         <locationX>0</locationX>
         <locationY>0</locationY>
         <connector>
-            <targetReference>Create_Peer_Reviewer_Record</targetReference>
+            <targetReference>Create_Team_Member_Record</targetReference>
         </connector>
         <faultConnector>
-            <targetReference>Error_Display_TeamLead</targetReference>
+            <isGoTo>true</isGoTo>
+            <targetReference>Error_Creating_Team_Lead</targetReference>
         </faultConnector>
         <inputAssignments>
             <field>Client_Name__c</field>
@@ -556,7 +660,7 @@
     </recordCreates>
     <recordCreates>
         <description>Create a record for Team Lead</description>
-        <name>Create_Team_Lead_Record2</name>
+        <name>Create_Team_Lead_Record1</name>
         <label>Create Team Lead Record</label>
         <locationX>0</locationX>
         <locationY>0</locationY>
@@ -565,7 +669,7 @@
         </connector>
         <faultConnector>
             <isGoTo>true</isGoTo>
-            <targetReference>Error_Display_TeamLead</targetReference>
+            <targetReference>Error_Creating_Team_Lead</targetReference>
         </faultConnector>
         <inputAssignments>
             <field>Client_Name__c</field>
@@ -619,11 +723,12 @@
         <locationX>0</locationX>
         <locationY>0</locationY>
         <connector>
+            <isGoTo>true</isGoTo>
             <targetReference>Success_Message</targetReference>
         </connector>
         <faultConnector>
             <isGoTo>true</isGoTo>
-            <targetReference>Error_Display_TeamLead</targetReference>
+            <targetReference>Error_Creating_Team_Lead</targetReference>
         </faultConnector>
         <inputAssignments>
             <field>Client_Name__c</field>
@@ -677,10 +782,11 @@
         <locationX>0</locationX>
         <locationY>0</locationY>
         <connector>
-            <targetReference>Create_Team_Lead_Record</targetReference>
+            <targetReference>Create_Peer_Reviewer_Record</targetReference>
         </connector>
         <faultConnector>
-            <targetReference>Error_Display</targetReference>
+            <isGoTo>true</isGoTo>
+            <targetReference>Error_creating_Team_Member</targetReference>
         </faultConnector>
         <inputAssignments>
             <field>Client_Name__c</field>
@@ -734,11 +840,11 @@
         <locationX>0</locationX>
         <locationY>0</locationY>
         <connector>
+            <isGoTo>true</isGoTo>
             <targetReference>Success_Message</targetReference>
         </connector>
         <faultConnector>
-            <isGoTo>true</isGoTo>
-            <targetReference>Error_Display</targetReference>
+            <targetReference>Error_creating_Team_Member</targetReference>
         </faultConnector>
         <inputAssignments>
             <field>Client_Name__c</field>
@@ -792,11 +898,11 @@
         <locationX>0</locationX>
         <locationY>0</locationY>
         <connector>
-            <targetReference>Create_Team_Lead_Record2</targetReference>
+            <targetReference>Create_Team_Lead_Record1</targetReference>
         </connector>
         <faultConnector>
             <isGoTo>true</isGoTo>
-            <targetReference>Error_Display</targetReference>
+            <targetReference>Error_creating_Team_Member</targetReference>
         </faultConnector>
         <inputAssignments>
             <field>Client_Name__c</field>
@@ -850,11 +956,11 @@
         <locationX>0</locationX>
         <locationY>0</locationY>
         <connector>
+            <isGoTo>true</isGoTo>
             <targetReference>Success_Message</targetReference>
         </connector>
         <faultConnector>
-            <isGoTo>true</isGoTo>
-            <targetReference>Error_Display_Reviewer</targetReference>
+            <targetReference>Error_creating_peer_reviewer</targetReference>
         </faultConnector>
         <inputAssignments>
             <field>Client_Name__c</field>
@@ -912,7 +1018,7 @@
         </connector>
         <faultConnector>
             <isGoTo>true</isGoTo>
-            <targetReference>Error_Display</targetReference>
+            <targetReference>Error_creating_Team_Member</targetReference>
         </faultConnector>
         <inputAssignments>
             <field>Client_Name__c</field>
@@ -960,6 +1066,75 @@
         <storeOutputAutomatically>true</storeOutputAutomatically>
     </recordCreates>
     <screens>
+        <description>Will throw an error if the team member name is found in another name field</description>
+        <name>Duplicate_Name_selected</name>
+        <label>Duplicate Name selected</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <allowBack>true</allowBack>
+        <allowFinish>true</allowFinish>
+        <allowPause>true</allowPause>
+        <fields>
+            <name>DuplicateErrorMessage</name>
+            <fieldText>&lt;p&gt;You’ve selected the same person for multiple roles.&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;Each of the following roles must be assigned to a different person:&lt;/p&gt;&lt;p&gt;- Team Member&lt;/p&gt;&lt;p&gt;- Team Lead&lt;/p&gt;&lt;p&gt;- Peer Reviewer&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;Please go back and update your selections.&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;</fieldText>
+            <fieldType>DisplayText</fieldType>
+        </fields>
+        <showFooter>true</showFooter>
+        <showHeader>true</showHeader>
+    </screens>
+    <screens>
+        <description>Will throw an error if the team lead name is found in another name field</description>
+        <name>Duplicate_Name_selected1</name>
+        <label>Duplicate Name selected</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <allowBack>true</allowBack>
+        <allowFinish>true</allowFinish>
+        <allowPause>true</allowPause>
+        <fields>
+            <name>Copy_1_of_DuplicateErrorMessage</name>
+            <fieldText>&lt;p&gt;You’ve selected the same person for multiple roles.&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;Each of the following roles must be assigned to a different person:&lt;/p&gt;&lt;p&gt;- Team Member&lt;/p&gt;&lt;p&gt;- Team Lead&lt;/p&gt;&lt;p&gt;- Peer Reviewer&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;Please go back and update your selections.&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;</fieldText>
+            <fieldType>DisplayText</fieldType>
+        </fields>
+        <showFooter>true</showFooter>
+        <showHeader>true</showHeader>
+    </screens>
+    <screens>
+        <description>Will throw an error if the peer reviewer name is found in another name field</description>
+        <name>Duplicate_Name_selected2</name>
+        <label>Duplicate Name selected</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <allowBack>true</allowBack>
+        <allowFinish>true</allowFinish>
+        <allowPause>true</allowPause>
+        <fields>
+            <name>Copy_2_of_DuplicateErrorMessage</name>
+            <fieldText>&lt;p&gt;You’ve selected the same person for multiple roles.&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;Each of the following roles must be assigned to a different person:&lt;/p&gt;&lt;p&gt;- Team Member&lt;/p&gt;&lt;p&gt;- Team Lead&lt;/p&gt;&lt;p&gt;- Peer Reviewer&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;Please go back and update your selections.&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;</fieldText>
+            <fieldType>DisplayText</fieldType>
+        </fields>
+        <showFooter>true</showFooter>
+        <showHeader>true</showHeader>
+    </screens>
+    <screens>
+        <description>Displays if an error occurs while creating the record</description>
+        <name>Error_creating_peer_reviewer</name>
+        <label>Error creating peer reviewer</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <allowBack>true</allowBack>
+        <allowFinish>true</allowFinish>
+        <allowPause>true</allowPause>
+        <fields>
+            <name>Errormessage</name>
+            <fieldText>&lt;p&gt;Couldn&apos;t create the peer reviewer record&lt;/p&gt;</fieldText>
+            <fieldType>DisplayText</fieldType>
+        </fields>
+        <showFooter>true</showFooter>
+        <showHeader>true</showHeader>
+    </screens>
+    <screens>
+        <description>Will throw an error if none of the name fields are selected</description>
         <name>Error_creating_record</name>
         <label>Error creating record</label>
         <locationX>0</locationX>
@@ -967,10 +1142,6 @@
         <allowBack>true</allowBack>
         <allowFinish>true</allowFinish>
         <allowPause>true</allowPause>
-        <connector>
-            <isGoTo>true</isGoTo>
-            <targetReference>Penalty_Tracker_Input</targetReference>
-        </connector>
         <fields>
             <name>Error_message</name>
             <fieldText>&lt;p&gt;Couldn’t create a record. Please select at least one lookup: Team Member, Team Lead, or Peer Reviewer.&lt;/p&gt;</fieldText>
@@ -980,54 +1151,41 @@
         <showHeader>true</showHeader>
     </screens>
     <screens>
-        <name>Error_Display</name>
-        <label>Error Display</label>
+        <description>Displays if an error occurs while creating the record</description>
+        <name>Error_Creating_Team_Lead</name>
+        <label>Error Creating Team Lead</label>
         <locationX>0</locationX>
         <locationY>0</locationY>
         <allowBack>true</allowBack>
         <allowFinish>true</allowFinish>
         <allowPause>true</allowPause>
         <fields>
-            <name>ErrorMessage</name>
-            <fieldText>&lt;p&gt;An error occurred while creating the Team Member record.&lt;/p&gt;</fieldText>
+            <name>ErrorMessage2</name>
+            <fieldText>&lt;p&gt;Couldn&apos;t create Team Lead record&lt;/p&gt;</fieldText>
             <fieldType>DisplayText</fieldType>
         </fields>
         <showFooter>true</showFooter>
         <showHeader>true</showHeader>
     </screens>
     <screens>
-        <name>Error_Display_Reviewer</name>
-        <label>Error Display</label>
+        <description>Displays if an error occurs while creating the record</description>
+        <name>Error_creating_Team_Member</name>
+        <label>Error creating Team Member</label>
         <locationX>0</locationX>
         <locationY>0</locationY>
         <allowBack>true</allowBack>
         <allowFinish>true</allowFinish>
         <allowPause>true</allowPause>
         <fields>
-            <name>Copy_1_of_ErrorMessageTL</name>
-            <fieldText>&lt;p&gt;An error occurred while creating the Peer Reviewer record.&lt;/p&gt;</fieldText>
+            <name>Errormessage1</name>
+            <fieldText>&lt;p&gt;Couldn&apos;t create Team Member record&lt;/p&gt;</fieldText>
             <fieldType>DisplayText</fieldType>
         </fields>
         <showFooter>true</showFooter>
         <showHeader>true</showHeader>
     </screens>
     <screens>
-        <name>Error_Display_TeamLead</name>
-        <label>Error Display</label>
-        <locationX>0</locationX>
-        <locationY>0</locationY>
-        <allowBack>true</allowBack>
-        <allowFinish>true</allowFinish>
-        <allowPause>true</allowPause>
-        <fields>
-            <name>ErrorMessageTL</name>
-            <fieldText>&lt;p&gt;An error occurred while creating the Team Lead record.&lt;/p&gt;</fieldText>
-            <fieldType>DisplayText</fieldType>
-        </fields>
-        <showFooter>true</showFooter>
-        <showHeader>true</showHeader>
-    </screens>
-    <screens>
+        <description>Enter the details to create records</description>
         <name>Penalty_Tracker_Input</name>
         <label>Penalty Tracker Input</label>
         <locationX>0</locationX>
@@ -1119,6 +1277,7 @@
         <showHeader>true</showHeader>
     </screens>
     <screens>
+        <description>Display a success message if a record is created successfully</description>
         <name>Success_Message</name>
         <label>Success Message</label>
         <locationX>0</locationX>
@@ -1141,7 +1300,7 @@
             <targetReference>Penalty_Tracker_Input</targetReference>
         </connector>
     </start>
-    <status>Draft</status>
+    <status>Active</status>
     <variables>
         <name>PenaltyPoints</name>
         <dataType>Number</dataType>
