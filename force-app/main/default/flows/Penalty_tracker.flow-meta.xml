@@ -307,6 +307,7 @@
             <label>Team Lead and Peer Reviewer</label>
         </rules>
     </decisions>
+    <description>This flow is used to create Penalty points for the SPT Team</description>
     <dynamicChoiceSets>
         <name>SPT_ClientName</name>
         <dataType>String</dataType>
