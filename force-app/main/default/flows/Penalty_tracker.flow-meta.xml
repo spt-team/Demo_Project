@@ -1300,7 +1300,7 @@
             <targetReference>Penalty_Tracker_Input</targetReference>
         </connector>
     </start>
-    <status>Draft</status>
+    <status>Active</status>
     <variables>
         <name>PenaltyPoints</name>
         <dataType>Number</dataType>
