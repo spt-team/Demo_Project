@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ListView xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>All</fullName>
+    <columns>NAME</columns>
+    <columns>InvoiceQuarter__c</columns>
+    <columns>Date__c</columns>
+    <columns>Developer_Invoice_Status__c</columns>
+    <columns>Invoice_Status__c</columns>
+    <columns>Pardha_Contracted_Hours__c</columns>
+    <columns>Configuration_Invoice_Status__c</columns>
+    <columns>SPT_Team_in_hours__c</columns>
+    <columns>Team_Lead_in_hours__c</columns>
+    <filterScope>Everything</filterScope>
+    <label>All</label>
+</ListView>
