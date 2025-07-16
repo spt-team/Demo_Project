@@ -734,19 +734,15 @@
                 <identifier>runtime_sales_activities_activityPanel</identifier>
             </componentInstance>
         </itemInstances>
-        <name>Facet-z8xo6ztgekl</name>
+        <name>Facet-7a872e5c-0ef1-4d3a-a769-35ed08365eac</name>
         <type>Facet</type>
     </flexiPageRegions>
     <flexiPageRegions>
         <itemInstances>
             <componentInstance>
                 <componentInstanceProperties>
-                    <name>active</name>
-                    <value>true</value>
-                </componentInstanceProperties>
-                <componentInstanceProperties>
                     <name>body</name>
-                    <value>Facet-z8xo6ztgekl</value>
+                    <value>Facet-7a872e5c-0ef1-4d3a-a769-35ed08365eac</value>
                 </componentInstanceProperties>
                 <componentInstanceProperties>
                     <name>title</name>
@@ -756,7 +752,7 @@
                 <identifier>flexipage_tab4</identifier>
             </componentInstance>
         </itemInstances>
-        <name>Facet-4r5dkd8mrsc</name>
+        <name>Facet-ab7d8f84-4004-4f55-a69e-9470830f4344</name>
         <type>Facet</type>
     </flexiPageRegions>
     <flexiPageRegions>
@@ -764,7 +760,7 @@
             <componentInstance>
                 <componentInstanceProperties>
                     <name>tabs</name>
-                    <value>Facet-4r5dkd8mrsc</value>
+                    <value>Facet-ab7d8f84-4004-4f55-a69e-9470830f4344</value>
                 </componentInstanceProperties>
                 <componentName>flexipage:tabset</componentName>
                 <identifier>flexipage_tabset2</identifier>
