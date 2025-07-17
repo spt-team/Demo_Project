@@ -22,13 +22,13 @@
                             <value>Edit</value>
                         </valueListItems>
                         <valueListItems>
-                            <value>Global.NewTask</value>
-                        </valueListItems>
-                        <valueListItems>
                             <value>Delete</value>
                         </valueListItems>
                         <valueListItems>
                             <value>Clone</value>
+                        </valueListItems>
+                        <valueListItems>
+                            <value>Global.NewTask</value>
                         </valueListItems>
                         <valueListItems>
                             <value>ChangeOwnerOne</value>
@@ -143,50 +143,10 @@
             <fieldInstance>
                 <fieldInstanceProperties>
                     <name>uiBehavior</name>
-                    <value>readonly</value>
-                </fieldInstanceProperties>
-                <fieldItem>Record.Total_hours__c</fieldItem>
-                <identifier>RecordTotal_hours_cField</identifier>
-            </fieldInstance>
-        </itemInstances>
-        <itemInstances>
-            <fieldInstance>
-                <fieldInstanceProperties>
-                    <name>uiBehavior</name>
-                    <value>readonly</value>
-                </fieldInstanceProperties>
-                <fieldItem>Record.Approval_Status__c</fieldItem>
-                <identifier>RecordApproval_Status_cField</identifier>
-            </fieldInstance>
-        </itemInstances>
-        <itemInstances>
-            <fieldInstance>
-                <fieldInstanceProperties>
-                    <name>uiBehavior</name>
                     <value>required</value>
                 </fieldInstanceProperties>
                 <fieldItem>Record.Invoice__c</fieldItem>
                 <identifier>RecordInvoice_cField</identifier>
-            </fieldInstance>
-        </itemInstances>
-        <itemInstances>
-            <fieldInstance>
-                <fieldInstanceProperties>
-                    <name>uiBehavior</name>
-                    <value>readonly</value>
-                </fieldInstanceProperties>
-                <fieldItem>Record.Month_for_invoice__c</fieldItem>
-                <identifier>RecordMonth_for_invoice_cField</identifier>
-            </fieldInstance>
-        </itemInstances>
-        <itemInstances>
-            <fieldInstance>
-                <fieldInstanceProperties>
-                    <name>uiBehavior</name>
-                    <value>none</value>
-                </fieldInstanceProperties>
-                <fieldItem>Record.Project_Time__c</fieldItem>
-                <identifier>RecordProject_Time_cField</identifier>
             </fieldInstance>
         </itemInstances>
         <itemInstances>
@@ -205,48 +165,8 @@
                     <name>uiBehavior</name>
                     <value>none</value>
                 </fieldInstanceProperties>
-                <fieldItem>Record.Case_status_closed_del__c</fieldItem>
-                <identifier>RecordCase_status_closed_del_cField</identifier>
-            </fieldInstance>
-        </itemInstances>
-        <itemInstances>
-            <fieldInstance>
-                <fieldInstanceProperties>
-                    <name>uiBehavior</name>
-                    <value>none</value>
-                </fieldInstanceProperties>
                 <fieldItem>Record.CurrencyIsoCode</fieldItem>
                 <identifier>RecordCurrencyIsoCodeField</identifier>
-            </fieldInstance>
-        </itemInstances>
-        <itemInstances>
-            <fieldInstance>
-                <fieldInstanceProperties>
-                    <name>uiBehavior</name>
-                    <value>none</value>
-                </fieldInstanceProperties>
-                <fieldItem>Record.Non_Billable_minutes__c</fieldItem>
-                <identifier>RecordNon_Billable_minutes__cField</identifier>
-            </fieldInstance>
-        </itemInstances>
-        <itemInstances>
-            <fieldInstance>
-                <fieldInstanceProperties>
-                    <name>uiBehavior</name>
-                    <value>none</value>
-                </fieldInstanceProperties>
-                <fieldItem>Record.Billable_Non_billable__c</fieldItem>
-                <identifier>RecordBillable_Non_billable__cField</identifier>
-            </fieldInstance>
-        </itemInstances>
-        <itemInstances>
-            <fieldInstance>
-                <fieldInstanceProperties>
-                    <name>uiBehavior</name>
-                    <value>none</value>
-                </fieldInstanceProperties>
-                <fieldItem>Record.Billable_Minutes__c</fieldItem>
-                <identifier>RecordBillable_Minutes__cField</identifier>
             </fieldInstance>
         </itemInstances>
         <name>Facet-6156eec7-f7e4-4054-a578-7fc70c63f8f3</name>
@@ -281,16 +201,6 @@
                 </fieldInstanceProperties>
                 <fieldItem>Record.Minutes__c</fieldItem>
                 <identifier>RecordMinutes_cField</identifier>
-            </fieldInstance>
-        </itemInstances>
-        <itemInstances>
-            <fieldInstance>
-                <fieldInstanceProperties>
-                    <name>uiBehavior</name>
-                    <value>none</value>
-                </fieldInstanceProperties>
-                <fieldItem>Record.Approval_Status__c</fieldItem>
-                <identifier>RecordApproval_Status_cField2</identifier>
             </fieldInstance>
         </itemInstances>
         <itemInstances>
