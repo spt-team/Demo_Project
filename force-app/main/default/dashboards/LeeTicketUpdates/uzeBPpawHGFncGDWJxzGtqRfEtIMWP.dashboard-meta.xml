@@ -653,7 +653,7 @@
                     <axisBinding>y</axisBinding>
                     <column>Penalty_Tracker__c.Penalty_Points__c</column>
                 </chartSummary>
-                <componentType>Column</componentType>
+                <componentType>Bar</componentType>
                 <decimalPrecision>-1</decimalPrecision>
                 <displayUnits>Auto</displayUnits>
                 <drillEnabled>false</drillEnabled>
@@ -671,6 +671,7 @@
                 <legendPosition>Bottom</legendPosition>
                 <report>unfiled$public/Penalty_Tracaker_iOL</report>
                 <showPercentage>false</showPercentage>
+                <showPicturesOnCharts>false</showPicturesOnCharts>
                 <showValues>true</showValues>
                 <sortBy>RowLabelAscending</sortBy>
                 <useReportChart>false</useReportChart>
