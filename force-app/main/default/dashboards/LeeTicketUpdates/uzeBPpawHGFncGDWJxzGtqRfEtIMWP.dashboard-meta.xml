@@ -338,9 +338,8 @@
                 <autoselectColumnsFromReport>false</autoselectColumnsFromReport>
                 <chartAxisRange>Auto</chartAxisRange>
                 <chartSummary>
-                    <aggregate>Sum</aggregate>
                     <axisBinding>y</axisBinding>
-                    <column>Account.Cases.Timesheets__r$Minutes__c</column>
+                    <column>FORMULA1</column>
                 </chartSummary>
                 <componentType>Column</componentType>
                 <decimalPrecision>-1</decimalPrecision>
@@ -374,9 +373,8 @@
                 <autoselectColumnsFromReport>false</autoselectColumnsFromReport>
                 <chartAxisRange>Auto</chartAxisRange>
                 <chartSummary>
-                    <aggregate>Sum</aggregate>
                     <axisBinding>y</axisBinding>
-                    <column>Account.Cases.Timesheets__r$Minutes__c</column>
+                    <column>FORMULA1</column>
                 </chartSummary>
                 <componentType>Column</componentType>
                 <decimalPrecision>-1</decimalPrecision>
@@ -533,7 +531,7 @@
                 <chartSummary>
                     <aggregate>Sum</aggregate>
                     <axisBinding>y</axisBinding>
-                    <column>CDF1</column>
+                    <column>TimeSheet__c$Minutes__c</column>
                 </chartSummary>
                 <componentType>BarGrouped</componentType>
                 <decimalPrecision>-1</decimalPrecision>
@@ -556,7 +554,7 @@
                 </groupingSortProperties>
                 <header>Time Spent THIS Quarter</header>
                 <legendPosition>Right</legendPosition>
-                <report>unfiled$public/Total_time_spent_by_colleague_this_month_APY</report>
+                <report>unfiled$public/Time_Spent_THIS_Quarter_Bi_NB_PKa</report>
                 <showPercentage>false</showPercentage>
                 <showValues>true</showValues>
                 <sortBy>RowLabelAscending</sortBy>
@@ -653,7 +651,7 @@
                     <axisBinding>y</axisBinding>
                     <column>Penalty_Tracker__c.Penalty_Points__c</column>
                 </chartSummary>
-                <componentType>Bar</componentType>
+                <componentType>Column</componentType>
                 <decimalPrecision>-1</decimalPrecision>
                 <displayUnits>Auto</displayUnits>
                 <drillEnabled>false</drillEnabled>
@@ -664,14 +662,14 @@
                 <groupingSortProperties>
                     <groupingSorts>
                         <groupingLevel>g1</groupingLevel>
-                        <sortOrder>a</sortOrder>
+                        <sortColumn>s!Penalty_Tracker__c.Penalty_Points__c</sortColumn>
+                        <sortOrder>d</sortOrder>
                     </groupingSorts>
                 </groupingSortProperties>
                 <header>Penalty Tracker</header>
                 <legendPosition>Bottom</legendPosition>
                 <report>unfiled$public/Penalty_Tracaker_iOL</report>
                 <showPercentage>false</showPercentage>
-                <showPicturesOnCharts>false</showPicturesOnCharts>
                 <showValues>true</showValues>
                 <sortBy>RowLabelAscending</sortBy>
                 <useReportChart>false</useReportChart>
