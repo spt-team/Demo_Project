@@ -1,0 +1,334 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Flow xmlns="http://soap.sforce.com/2006/04/metadata">
+    <actionCalls>
+        <name>Notify_to_Sundari</name>
+        <label>Notify to Sundari</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <actionName>emailSimple</actionName>
+        <actionType>emailSimple</actionType>
+        <flowTransactionModel>CurrentTransaction</flowTransactionModel>
+        <inputParameters>
+            <name>emailAddresses</name>
+            <value>
+                <stringValue>muthuraman6112001@gmail.com</stringValue>
+            </value>
+        </inputParameters>
+        <inputParameters>
+            <name>senderType</name>
+            <value>
+                <stringValue>OrgWideEmailAddress</stringValue>
+            </value>
+        </inputParameters>
+        <inputParameters>
+            <name>senderAddress</name>
+            <value>
+                <stringValue>support@sweetpotatotec.com</stringValue>
+            </value>
+        </inputParameters>
+        <inputParameters>
+            <name>composeEmailContent</name>
+            <value>
+                <stringValue>True</stringValue>
+            </value>
+        </inputParameters>
+        <inputParameters>
+            <name>emailSubject</name>
+            <value>
+                <stringValue>Action Required – Upcoming Contract Renewals</stringValue>
+            </value>
+        </inputParameters>
+        <inputParameters>
+            <name>emailBody</name>
+            <value>
+                <stringValue>&lt;p&gt;Hi &lt;strong&gt;Sundari&lt;/strong&gt;,&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;The following contracts are approaching their end date. Please review and proceed with the renewal process at your earliest convenience.&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;{!contracttable}&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;Let us know once you&apos;ve initiated the renewal process or if you need any support.&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;&lt;strong&gt;Best regards&lt;/strong&gt;,&lt;/p&gt;&lt;p&gt;Leadership Team&lt;/p&gt;</stringValue>
+            </value>
+        </inputParameters>
+        <inputParameters>
+            <name>sendRichBody</name>
+            <value>
+                <booleanValue>true</booleanValue>
+            </value>
+        </inputParameters>
+        <inputParameters>
+            <name>useLineBreaks</name>
+        </inputParameters>
+        <inputParameters>
+            <name>relatedRecordId</name>
+        </inputParameters>
+        <nameSegment>emailSimple</nameSegment>
+        <offset>0</offset>
+        <versionString>1.0.1</versionString>
+    </actionCalls>
+    <apiVersion>64.0</apiVersion>
+    <assignments>
+        <name>Add_contract_Row</name>
+        <label>Add contract Row</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <assignmentItems>
+            <assignToReference>ContractTableRows</assignToReference>
+            <operator>Add</operator>
+            <value>
+                <elementReference>ContractTableRow</elementReference>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>Each_contract_found</targetReference>
+        </connector>
+    </assignments>
+    <assignments>
+        <name>Assign_Contract_Data</name>
+        <label>Assign Contract Data</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <assignmentItems>
+            <assignToReference>SingleContractRecord.ContractNumber</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>Each_contract_found.ContractNumber</elementReference>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>SingleContractRecord.EndDate</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>Each_contract_found.EndDate</elementReference>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>SingleContractRecord.StartDate</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>Each_contract_found.StartDate</elementReference>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>SingleContractRecord.AccountId</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>Each_contract_found.AccountId</elementReference>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>SingleContractRecord.Id</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>Each_contract_found.Id</elementReference>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>SingleContractRecord.Status</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>Each_contract_found.Status</elementReference>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>Set_Row_vers</targetReference>
+        </connector>
+    </assignments>
+    <assignments>
+        <name>Contract_Table</name>
+        <label>Contract Table</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <assignmentItems>
+            <assignToReference>ContractTables</assignToReference>
+            <operator>Add</operator>
+            <value>
+                <elementReference>ContractTableRows</elementReference>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>Notify_to_Sundari</targetReference>
+        </connector>
+    </assignments>
+    <assignments>
+        <name>Set_Row_vers</name>
+        <label>Set Row vers</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <assignmentItems>
+            <assignToReference>RowNumber</assignToReference>
+            <operator>Add</operator>
+            <value>
+                <numberValue>1.0</numberValue>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>Add_contract_Row</targetReference>
+        </connector>
+    </assignments>
+    <environments>Default</environments>
+    <formulas>
+        <name>Enddate</name>
+        <dataType>Date</dataType>
+        <expression>{!$Flow.CurrentDate}+30</expression>
+    </formulas>
+    <interviewLabel>Contract Expiry Alert {!$Flow.CurrentDateTime}</interviewLabel>
+    <label>Contract Expiry Alert</label>
+    <loops>
+        <name>Each_contract_found</name>
+        <label>Each contract found.</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <collectionReference>Get_Expiring_Contracts</collectionReference>
+        <iterationOrder>Asc</iterationOrder>
+        <nextValueConnector>
+            <targetReference>Assign_Contract_Data</targetReference>
+        </nextValueConnector>
+        <noMoreValuesConnector>
+            <targetReference>Contract_Table</targetReference>
+        </noMoreValuesConnector>
+    </loops>
+    <processMetadataValues>
+        <name>BuilderType</name>
+        <value>
+            <stringValue>LightningFlowBuilder</stringValue>
+        </value>
+    </processMetadataValues>
+    <processMetadataValues>
+        <name>CanvasMode</name>
+        <value>
+            <stringValue>AUTO_LAYOUT_CANVAS</stringValue>
+        </value>
+    </processMetadataValues>
+    <processMetadataValues>
+        <name>OriginBuilderType</name>
+        <value>
+            <stringValue>LightningFlowBuilder</stringValue>
+        </value>
+    </processMetadataValues>
+    <processType>AutoLaunchedFlow</processType>
+    <recordLookups>
+        <name>Get_Expiring_Contracts</name>
+        <label>Get Expiring Contracts</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
+        <connector>
+            <targetReference>Each_contract_found</targetReference>
+        </connector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>EndDate</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>Enddate</elementReference>
+            </value>
+        </filters>
+        <getFirstRecordOnly>false</getFirstRecordOnly>
+        <object>Contract</object>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </recordLookups>
+    <start>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <connector>
+            <targetReference>Get_Expiring_Contracts</targetReference>
+        </connector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>Status</field>
+            <operator>EqualTo</operator>
+            <value>
+                <stringValue>Activated</stringValue>
+            </value>
+        </filters>
+        <object>Contract</object>
+        <schedule>
+            <frequency>Daily</frequency>
+            <startDate>2025-07-31</startDate>
+            <startTime>07:15:00.000Z</startTime>
+        </schedule>
+        <triggerType>Scheduled</triggerType>
+    </start>
+    <status>Active</status>
+    <textTemplates>
+        <name>Allcellstyle</name>
+        <isViewedAsPlainText>true</isViewedAsPlainText>
+        <text>text-align: left; padding: 8px; border: 1px solid black;</text>
+    </textTemplates>
+    <textTemplates>
+        <name>contracttable</name>
+        <isViewedAsPlainText>true</isViewedAsPlainText>
+        <text>&lt;table style=&quot;border-collapse: collapse; width: 100%; border: 1px solid black; padding: 8px &quot;&gt;
+{!contracttableheader}
+{!ContractTables}
+&lt;/table&gt;</text>
+    </textTemplates>
+    <textTemplates>
+        <name>contracttableheader</name>
+        <isViewedAsPlainText>true</isViewedAsPlainText>
+        <text>&lt;tr style=&quot;background-color: #008000; color: white; border: 1px solid black; padding: 8px&quot;&gt; 
+     &lt;th style = &quot;{!HeaderStyle}&quot;&gt;S.No&lt;/th&gt;
+     &lt;th style = &quot;{!HeaderStyle}&quot;&gt;Client Org Name&lt;/th&gt;
+     &lt;th  style = &quot;{!HeaderStyle}&quot;&gt;Conract Number&lt;/th&gt;
+    &lt;th  style = &quot;{!HeaderStyle}&quot;&gt;Conract  Start Date&lt;/th&gt;
+    &lt;th  style = &quot;{!HeaderStyle}&quot;&gt;Contract End Date&lt;/th&gt;
+     &lt;th  style = &quot;{!HeaderStyle}&quot;&gt;Status&lt;/th&gt;
+&lt;/tr&gt;</text>
+    </textTemplates>
+    <textTemplates>
+        <name>ContractTableRow</name>
+        <isViewedAsPlainText>true</isViewedAsPlainText>
+        <text>&lt;tr&gt;
+ &lt;td style=&quot;{!Allcellstyle}&quot;&gt;{!RowNumber}&lt;/td&gt;
+ &lt;td style=&quot;{!Allcellstyle}&quot;&gt;{!SingleContractRecord.Account.Name}&lt;/td&gt;
+  &lt;td style=&quot;{!Allcellstyle}&quot;&gt;
+   &lt;a href=&quot;{!$Label.salesforce_URL}{!Each_contract_found.Id}&quot;&gt;
+      {!Each_contract_found.ContractNumber}
+    &lt;/a&gt;
+&lt;/td&gt;
+  &lt;td style=&quot;{!Allcellstyle}&quot;&gt;{!SingleContractRecord.StartDate}&lt;/td&gt;
+  &lt;/td&gt;
+  &lt;td style=&quot;{!Allcellstyle}&quot;&gt;{!Each_contract_found.EndDate}&lt;/td&gt;
+  &lt;/td&gt;
+  &lt;td style=&quot;{!Allcellstyle}&quot;&gt;{!SingleContractRecord.Status}&lt;/td&gt;
+&lt;/tr&gt;</text>
+    </textTemplates>
+    <textTemplates>
+        <name>HeaderStyle</name>
+        <isViewedAsPlainText>true</isViewedAsPlainText>
+        <text>text-align: left; padding: 8px; border: 1px solid black;</text>
+    </textTemplates>
+    <variables>
+        <name>ContractsCollection</name>
+        <dataType>SObject</dataType>
+        <isCollection>true</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+        <objectType>Contract</objectType>
+    </variables>
+    <variables>
+        <name>ContractTableRows</name>
+        <dataType>String</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+    </variables>
+    <variables>
+        <name>ContractTables</name>
+        <dataType>String</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+    </variables>
+    <variables>
+        <name>RowNumber</name>
+        <dataType>Number</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+        <scale>0</scale>
+    </variables>
+    <variables>
+        <name>SingleContractRecord</name>
+        <dataType>SObject</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+        <objectType>Contract</objectType>
+    </variables>
+</Flow>
