@@ -2,7 +2,7 @@
 <Flow xmlns="http://soap.sforce.com/2006/04/metadata">
     <actionCalls>
         <name>Notify_to_Sundari</name>
-        <label>Notify to Sundari</label>
+        <label>Notify_to_Sundari</label>
         <locationX>0</locationX>
         <locationY>0</locationY>
         <actionName>emailSimple</actionName>
@@ -15,16 +15,19 @@
             </value>
         </inputParameters>
         <inputParameters>
-            <name>senderType</name>
+            <name>ccRecipientAddressList</name>
             <value>
-                <stringValue>OrgWideEmailAddress</stringValue>
+                <stringValue>jega@sweetpotatotec.com</stringValue>
             </value>
         </inputParameters>
         <inputParameters>
+            <name>ccRecipientAddressCollection</name>
+        </inputParameters>
+        <inputParameters>
+            <name>senderType</name>
+        </inputParameters>
+        <inputParameters>
             <name>senderAddress</name>
-            <value>
-                <stringValue>support@sweetpotatotec.com</stringValue>
-            </value>
         </inputParameters>
         <inputParameters>
             <name>composeEmailContent</name>
@@ -41,7 +44,7 @@
         <inputParameters>
             <name>emailBody</name>
             <value>
-                <stringValue>&lt;p&gt;Hi &lt;strong&gt;Sundari&lt;/strong&gt;,&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;The following contracts are approaching their end date. Please review and proceed with the renewal process at your earliest convenience.&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;{!contracttable}&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;Let us know once you&apos;ve initiated the renewal process or if you need any support.&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;&lt;strong&gt;Best regards&lt;/strong&gt;,&lt;/p&gt;&lt;p&gt;Leadership Team&lt;/p&gt;</stringValue>
+                <elementReference>Emailbody</elementReference>
             </value>
         </inputParameters>
         <inputParameters>
@@ -51,10 +54,10 @@
             </value>
         </inputParameters>
         <inputParameters>
-            <name>useLineBreaks</name>
-        </inputParameters>
-        <inputParameters>
-            <name>relatedRecordId</name>
+            <name>recipientId</name>
+            <value>
+                <stringValue>muthu@sweetpotatotec.com</stringValue>
+            </value>
         </inputParameters>
         <nameSegment>emailSimple</nameSegment>
         <offset>0</offset>
@@ -62,15 +65,15 @@
     </actionCalls>
     <apiVersion>64.0</apiVersion>
     <assignments>
-        <name>Add_contract_Row</name>
-        <label>Add contract Row</label>
+        <name>Add_columns_to_the_table</name>
+        <label>Add columns to the table</label>
         <locationX>0</locationX>
         <locationY>0</locationY>
         <assignmentItems>
-            <assignToReference>ContractTableRows</assignToReference>
+            <assignToReference>TableContract</assignToReference>
             <operator>Add</operator>
             <value>
-                <elementReference>ContractTableRow</elementReference>
+                <elementReference>TableContractColumns</elementReference>
             </value>
         </assignmentItems>
         <connector>
@@ -78,75 +81,8 @@
         </connector>
     </assignments>
     <assignments>
-        <name>Assign_Contract_Data</name>
-        <label>Assign Contract Data</label>
-        <locationX>0</locationX>
-        <locationY>0</locationY>
-        <assignmentItems>
-            <assignToReference>SingleContractRecord.ContractNumber</assignToReference>
-            <operator>Assign</operator>
-            <value>
-                <elementReference>Each_contract_found.ContractNumber</elementReference>
-            </value>
-        </assignmentItems>
-        <assignmentItems>
-            <assignToReference>SingleContractRecord.EndDate</assignToReference>
-            <operator>Assign</operator>
-            <value>
-                <elementReference>Each_contract_found.EndDate</elementReference>
-            </value>
-        </assignmentItems>
-        <assignmentItems>
-            <assignToReference>SingleContractRecord.StartDate</assignToReference>
-            <operator>Assign</operator>
-            <value>
-                <elementReference>Each_contract_found.StartDate</elementReference>
-            </value>
-        </assignmentItems>
-        <assignmentItems>
-            <assignToReference>SingleContractRecord.AccountId</assignToReference>
-            <operator>Assign</operator>
-            <value>
-                <elementReference>Each_contract_found.AccountId</elementReference>
-            </value>
-        </assignmentItems>
-        <assignmentItems>
-            <assignToReference>SingleContractRecord.Id</assignToReference>
-            <operator>Assign</operator>
-            <value>
-                <elementReference>Each_contract_found.Id</elementReference>
-            </value>
-        </assignmentItems>
-        <assignmentItems>
-            <assignToReference>SingleContractRecord.Status</assignToReference>
-            <operator>Assign</operator>
-            <value>
-                <elementReference>Each_contract_found.Status</elementReference>
-            </value>
-        </assignmentItems>
-        <connector>
-            <targetReference>Set_Row_vers</targetReference>
-        </connector>
-    </assignments>
-    <assignments>
-        <name>Contract_Table</name>
-        <label>Contract Table</label>
-        <locationX>0</locationX>
-        <locationY>0</locationY>
-        <assignmentItems>
-            <assignToReference>ContractTables</assignToReference>
-            <operator>Add</operator>
-            <value>
-                <elementReference>ContractTableRows</elementReference>
-            </value>
-        </assignmentItems>
-        <connector>
-            <targetReference>Notify_to_Sundari</targetReference>
-        </connector>
-    </assignments>
-    <assignments>
-        <name>Set_Row_vers</name>
-        <label>Set Row vers</label>
+        <name>Add_Rows_to_the_table</name>
+        <label>Add Rows to the table</label>
         <locationX>0</locationX>
         <locationY>0</locationY>
         <assignmentItems>
@@ -156,15 +92,67 @@
                 <numberValue>1.0</numberValue>
             </value>
         </assignmentItems>
+        <assignmentItems>
+            <assignToReference>TableContract</assignToReference>
+            <operator>Add</operator>
+            <value>
+                <elementReference>TableContractRows</elementReference>
+            </value>
+        </assignmentItems>
         <connector>
-            <targetReference>Add_contract_Row</targetReference>
+            <targetReference>Each_contract_found</targetReference>
         </connector>
     </assignments>
+    <assignments>
+        <name>Close_the_Table</name>
+        <label>Close the Table</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <assignmentItems>
+            <assignToReference>TableContract</assignToReference>
+            <operator>Add</operator>
+            <value>
+                <stringValue> &lt;/table&gt;</stringValue>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>Notify_to_Sundari</targetReference>
+        </connector>
+    </assignments>
+    <decisions>
+        <name>Check_if_Records_Found</name>
+        <label>Check if Records Found</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
+        <rules>
+            <name>Any_Contracts</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>Get_Expiring_Contracts</leftValueReference>
+                <operator>IsNull</operator>
+                <rightValue>
+                    <booleanValue>false</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Add_columns_to_the_table</targetReference>
+            </connector>
+            <label>Any Contracts?</label>
+        </rules>
+    </decisions>
     <environments>Default</environments>
     <formulas>
-        <name>Enddate</name>
-        <dataType>Date</dataType>
-        <expression>{!$Flow.CurrentDate}+30</expression>
+        <name>TableContractRows</name>
+        <dataType>String</dataType>
+        <expression>&apos;&lt;tr&gt;&apos; +
+    &apos;&lt;td style=&quot;border: 1px solid black;&quot;&gt;&apos; + TEXT({!RowNumber}) + &apos;&lt;/td&gt;&apos; +
+    &apos;&lt;td style=&quot;border: 1px solid black;&quot;&gt;&apos; + {!Each_contract_found.Account.Name}+ &apos;&lt;/td&gt;&apos; +
+    &apos;&lt;td style=&quot;border: 1px solid black;&quot;&gt;&lt;a href=&quot;&apos; + {!$Label.salesforce_URL} + {!Each_contract_found.Id} + &apos;&quot;&gt;&apos; + {!Each_contract_found.ContractNumber} + &apos;&lt;/a&gt;&lt;/td&gt;&apos; +
+    &apos;&lt;td style=&quot;border: 1px solid black;&quot;&gt;&apos; + TEXT({!Each_contract_found.StartDate}) + &apos;&lt;/td&gt;&apos; +
+    &apos;&lt;td style=&quot;border: 1px solid black;&quot;&gt;&apos; + TEXT({!Each_contract_found.EndDate}) + &apos;&lt;/td&gt;&apos; +
+    &apos;&lt;td style=&quot;border: 1px solid black;&quot;&gt;&apos; + TEXT({!Each_contract_found.Status}) + &apos;&lt;/td&gt;&apos; +
+&apos;&lt;/tr&gt;&apos;</expression>
     </formulas>
     <interviewLabel>Contract Expiry Alert {!$Flow.CurrentDateTime}</interviewLabel>
     <label>Contract Expiry Alert</label>
@@ -176,10 +164,10 @@
         <collectionReference>Get_Expiring_Contracts</collectionReference>
         <iterationOrder>Asc</iterationOrder>
         <nextValueConnector>
-            <targetReference>Assign_Contract_Data</targetReference>
+            <targetReference>Add_Rows_to_the_table</targetReference>
         </nextValueConnector>
         <noMoreValuesConnector>
-            <targetReference>Contract_Table</targetReference>
+            <targetReference>Close_the_Table</targetReference>
         </noMoreValuesConnector>
     </loops>
     <processMetadataValues>
@@ -208,14 +196,28 @@
         <locationY>0</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
-            <targetReference>Each_contract_found</targetReference>
+            <targetReference>Check_if_Records_Found</targetReference>
         </connector>
         <filterLogic>and</filterLogic>
         <filters>
-            <field>EndDate</field>
+            <field>Parent_ID__c</field>
             <operator>EqualTo</operator>
             <value>
-                <elementReference>Enddate</elementReference>
+                <elementReference>$Record.Id</elementReference>
+            </value>
+        </filters>
+        <filters>
+            <field>Expirydate_Alert__c</field>
+            <operator>EqualTo</operator>
+            <value>
+                <booleanValue>true</booleanValue>
+            </value>
+        </filters>
+        <filters>
+            <field>Status</field>
+            <operator>EqualTo</operator>
+            <value>
+                <stringValue>Activated</stringValue>
             </value>
         </filters>
         <getFirstRecordOnly>false</getFirstRecordOnly>
@@ -230,90 +232,51 @@
         </connector>
         <filterLogic>and</filterLogic>
         <filters>
-            <field>Status</field>
+            <field>Ac_Parent_id__c</field>
             <operator>EqualTo</operator>
             <value>
-                <stringValue>Activated</stringValue>
+                <booleanValue>true</booleanValue>
             </value>
         </filters>
-        <object>Contract</object>
+        <object>Account</object>
         <schedule>
             <frequency>Daily</frequency>
-            <startDate>2025-07-31</startDate>
+            <startDate>2025-08-04</startDate>
             <startTime>07:15:00.000Z</startTime>
         </schedule>
         <triggerType>Scheduled</triggerType>
     </start>
-    <status>Active</status>
+    <status>Draft</status>
     <textTemplates>
-        <name>Allcellstyle</name>
-        <isViewedAsPlainText>true</isViewedAsPlainText>
-        <text>text-align: left; padding: 8px; border: 1px solid black;</text>
-    </textTemplates>
-    <textTemplates>
-        <name>contracttable</name>
-        <isViewedAsPlainText>true</isViewedAsPlainText>
-        <text>&lt;table style=&quot;border-collapse: collapse; width: 100%; border: 1px solid black; padding: 8px &quot;&gt;
-{!contracttableheader}
-{!ContractTables}
-&lt;/table&gt;</text>
-    </textTemplates>
-    <textTemplates>
-        <name>contracttableheader</name>
-        <isViewedAsPlainText>true</isViewedAsPlainText>
-        <text>&lt;tr style=&quot;background-color: #008000; color: white; border: 1px solid black; padding: 8px&quot;&gt; 
-     &lt;th style = &quot;{!HeaderStyle}&quot;&gt;S.No&lt;/th&gt;
-     &lt;th style = &quot;{!HeaderStyle}&quot;&gt;Client Org Name&lt;/th&gt;
-     &lt;th  style = &quot;{!HeaderStyle}&quot;&gt;Conract Number&lt;/th&gt;
-    &lt;th  style = &quot;{!HeaderStyle}&quot;&gt;Conract  Start Date&lt;/th&gt;
-    &lt;th  style = &quot;{!HeaderStyle}&quot;&gt;Contract End Date&lt;/th&gt;
-     &lt;th  style = &quot;{!HeaderStyle}&quot;&gt;Status&lt;/th&gt;
-&lt;/tr&gt;</text>
-    </textTemplates>
-    <textTemplates>
-        <name>ContractTableRow</name>
-        <isViewedAsPlainText>true</isViewedAsPlainText>
-        <text>&lt;tr&gt;
- &lt;td style=&quot;{!Allcellstyle}&quot;&gt;{!RowNumber}&lt;/td&gt;
- &lt;td style=&quot;{!Allcellstyle}&quot;&gt;{!SingleContractRecord.Account.Name}&lt;/td&gt;
-  &lt;td style=&quot;{!Allcellstyle}&quot;&gt;
-   &lt;a href=&quot;https://sweetpotatotec--dev1.sandbox.lightning.force.com/{!Each_contract_found.Id}&quot;&gt;
-      {!Each_contract_found.ContractNumber}
-    &lt;/a&gt;
-&lt;/td&gt;
-  &lt;td style=&quot;{!Allcellstyle}&quot;&gt;{!SingleContractRecord.StartDate}&lt;/td&gt;
-  &lt;/td&gt;
-  &lt;td style=&quot;{!Allcellstyle}&quot;&gt;{!Each_contract_found.EndDate}&lt;/td&gt;
-  &lt;/td&gt;
-  &lt;td style=&quot;{!Allcellstyle}&quot;&gt;{!SingleContractRecord.Status}&lt;/td&gt;
-&lt;/tr&gt;</text>
-    </textTemplates>
-    <textTemplates>
-        <name>HeaderStyle</name>
-        <isViewedAsPlainText>true</isViewedAsPlainText>
-        <text>text-align: left; padding: 8px; border: 1px solid black;</text>
+        <name>Emailbody</name>
+        <isViewedAsPlainText>false</isViewedAsPlainText>
+        <text>&lt;p&gt;Hi &lt;strong&gt;Sundari&lt;/strong&gt;,&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;The following contracts are approaching their end date. Please review and proceed with the renewal process at your earliest convenience.&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;{!TableContract}&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;Let us know once you&apos;ve initiated the renewal process or if you need any support.&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;&lt;strong&gt;Best regards&lt;/strong&gt;,&lt;/p&gt;&lt;p&gt;Leadership Team&lt;/p&gt;</text>
     </textTemplates>
     <variables>
-        <name>ContractsCollection</name>
+        <name>contactrecord</name>
         <dataType>SObject</dataType>
-        <isCollection>true</isCollection>
+        <isCollection>false</isCollection>
         <isInput>false</isInput>
         <isOutput>false</isOutput>
-        <objectType>Contract</objectType>
+        <objectType>Contact</objectType>
     </variables>
     <variables>
-        <name>ContractTableRows</name>
+        <name>contractCount</name>
+        <dataType>Number</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+        <scale>0</scale>
+    </variables>
+    <variables>
+        <name>ParentID</name>
         <dataType>String</dataType>
         <isCollection>false</isCollection>
         <isInput>false</isInput>
         <isOutput>false</isOutput>
-    </variables>
-    <variables>
-        <name>ContractTables</name>
-        <dataType>String</dataType>
-        <isCollection>false</isCollection>
-        <isInput>false</isInput>
-        <isOutput>false</isOutput>
+        <value>
+            <elementReference>$Label.Parent_ID</elementReference>
+        </value>
     </variables>
     <variables>
         <name>RowNumber</name>
@@ -324,11 +287,23 @@
         <scale>0</scale>
     </variables>
     <variables>
-        <name>SingleContractRecord</name>
-        <dataType>SObject</dataType>
+        <name>TableContract</name>
+        <dataType>String</dataType>
         <isCollection>false</isCollection>
         <isInput>false</isInput>
         <isOutput>false</isOutput>
-        <objectType>Contract</objectType>
+        <value>
+            <stringValue>&lt;table style=&quot;width:100%; border: 1px solid black;&quot;&gt;</stringValue>
+        </value>
+    </variables>
+    <variables>
+        <name>TableContractColumns</name>
+        <dataType>String</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+        <value>
+            <stringValue>&lt;tr&gt;  &lt;th style=&quot;border: 1px solid black;&quot;&gt;S.No&lt;/th&gt;  &lt;th style=&quot;border: 1px solid black;&quot;&gt;Client Org Name&lt;/th&gt;  &lt;th style=&quot;border: 1px solid black;&quot;&gt;Conract Number&lt;/th&gt;  &lt;th style=&quot;border: 1px solid black;&quot;&gt;Conract Start Date&lt;/th&gt;  &lt;th style=&quot;border: 1px solid black;&quot;&gt;Contract End Date&lt;/th&gt; &lt;th style=&quot;border: 1px solid black;&quot;&gt;Status&lt;/th&gt; &lt;/tr&gt;</stringValue>
+        </value>
     </variables>
 </Flow>
