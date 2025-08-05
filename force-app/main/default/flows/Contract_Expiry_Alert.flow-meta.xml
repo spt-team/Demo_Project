@@ -11,7 +11,7 @@
         <inputParameters>
             <name>emailAddresses</name>
             <value>
-                <stringValue>muthuraman6112001@gmail.com,muthu@sweetpotatotec.com</stringValue>
+                <stringValue>muthuraman6112001@gmail.com,muthu@sweetpotatotec.com,aruna@sweetpotatotec.com</stringValue>
             </value>
         </inputParameters>
         <inputParameters>
@@ -250,7 +250,7 @@
     <textTemplates>
         <name>Emailbody</name>
         <isViewedAsPlainText>false</isViewedAsPlainText>
-        <text>&lt;p&gt;Hi &lt;strong&gt;Sundari&lt;/strong&gt;,&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;The following contracts are approaching their end date. Please review and proceed with the renewal process at your earliest convenience.&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;{!TableContract}&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;Let us know once you&apos;ve initiated the renewal process or if you need any support.&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;&lt;strong&gt;Best regards&lt;/strong&gt;,&lt;/p&gt;&lt;p&gt;Leadership Team&lt;/p&gt;</text>
+        <text>&lt;p&gt;Hi Sundari,&lt;/p&gt;&lt;p&gt;The following contracts are approaching their end date. Please review and proceed with the renewal process at your earliest convenience.&lt;/p&gt;&lt;p&gt;{!TableContract}&lt;/p&gt;&lt;p&gt;Let us know once you&apos;ve initiated the renewal process or if you need any support.&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;Best regards,&lt;/p&gt;&lt;p&gt;Leadership Team&lt;/p&gt;</text>
     </textTemplates>
     <variables>
         <name>contactrecord</name>
