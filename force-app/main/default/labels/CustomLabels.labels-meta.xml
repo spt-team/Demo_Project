@@ -21,4 +21,11 @@
         <shortDescription>Parent ID</shortDescription>
         <value>001U700000OYwqcIAD</value>
     </labels>
+    <labels>
+        <fullName>spt_id</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>spt id</shortDescription>
+        <value>001U700000OYwqcIAD</value>
+    </labels>
 </CustomLabels>
