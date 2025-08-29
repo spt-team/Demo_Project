@@ -1,0 +1,877 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Flow xmlns="http://soap.sforce.com/2006/04/metadata">
+    <actionCalls>
+        <description>Sends the completed table (most likely via email or notification) to Sundari.</description>
+        <name>Notify_to_the_Founder</name>
+        <label>Notify to the Founder</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <actionName>emailSimple</actionName>
+        <actionType>emailSimple</actionType>
+        <flowTransactionModel>CurrentTransaction</flowTransactionModel>
+        <inputParameters>
+            <name>emailAddresses</name>
+            <value>
+                <elementReference>$Label.Founder_Email</elementReference>
+            </value>
+        </inputParameters>
+        <inputParameters>
+            <name>ccRecipientAddressList</name>
+            <value>
+                <elementReference>$Label.TeamLead_Email_Recipients</elementReference>
+            </value>
+        </inputParameters>
+        <inputParameters>
+            <name>composeEmailContent</name>
+            <value>
+                <stringValue>True</stringValue>
+            </value>
+        </inputParameters>
+        <inputParameters>
+            <name>emailSubject</name>
+            <value>
+                <elementReference>Subject</elementReference>
+            </value>
+        </inputParameters>
+        <inputParameters>
+            <name>emailBody</name>
+            <value>
+                <elementReference>emailbody</elementReference>
+            </value>
+        </inputParameters>
+        <inputParameters>
+            <name>sendRichBody</name>
+            <value>
+                <booleanValue>true</booleanValue>
+            </value>
+        </inputParameters>
+        <nameSegment>emailSimple</nameSegment>
+        <offset>0</offset>
+        <versionString>1.0.1</versionString>
+    </actionCalls>
+    <apiVersion>64.0</apiVersion>
+    <assignments>
+        <description>Initializes the table with column headers</description>
+        <name>Add_columns_to_the_table</name>
+        <label>Add columns to the table</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <assignmentItems>
+            <assignToReference>TableTimesheet</assignToReference>
+            <operator>Add</operator>
+            <value>
+                <elementReference>TableTimesheetColumns</elementReference>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>loop_each_contract</targetReference>
+        </connector>
+    </assignments>
+    <assignments>
+        <description>Add Rows to the Table</description>
+        <name>Add_Row_to_the_table</name>
+        <label>Add Row to the table</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <assignmentItems>
+            <assignToReference>RowNumber</assignToReference>
+            <operator>Add</operator>
+            <value>
+                <numberValue>1.0</numberValue>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>TableTimesheet</assignToReference>
+            <operator>Add</operator>
+            <value>
+                <elementReference>TableQuarterlyTimesheetRow</elementReference>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>Empty_to_the_fields</targetReference>
+        </connector>
+    </assignments>
+    <assignments>
+        <description>Add Rows to the Table</description>
+        <name>Add_Rows_to_the_table</name>
+        <label>Add Rows to the table</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <assignmentItems>
+            <assignToReference>RowNumber</assignToReference>
+            <operator>Add</operator>
+            <value>
+                <numberValue>1.0</numberValue>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>TableTimesheet</assignToReference>
+            <operator>Add</operator>
+            <value>
+                <elementReference>TableMonthlyTimseheetRows</elementReference>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>Empty_to_the_field</targetReference>
+        </connector>
+    </assignments>
+    <assignments>
+        <description>Finalizes the table format after all rows are added.</description>
+        <name>Close_the_Table</name>
+        <label>Close the Table</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <assignmentItems>
+            <assignToReference>TableTimesheet</assignToReference>
+            <operator>Add</operator>
+            <value>
+                <stringValue> &lt;/table&gt;</stringValue>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>Notify_to_the_Founder</targetReference>
+        </connector>
+    </assignments>
+    <assignments>
+        <description>Clear the two variable values</description>
+        <name>Empty_to_the_field</name>
+        <label>Empty to the field</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <assignmentItems>
+            <assignToReference>Lead_Total_Minutes</assignToReference>
+            <operator>Assign</operator>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>SPT_Total_Minutes</assignToReference>
+            <operator>Assign</operator>
+        </assignmentItems>
+        <connector>
+            <targetReference>Each_Active_Monthly_Account</targetReference>
+        </connector>
+    </assignments>
+    <assignments>
+        <description>Clear the two variable values</description>
+        <name>Empty_to_the_fields</name>
+        <label>Empty to the fields</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <assignmentItems>
+            <assignToReference>Lead_Total_Minutes</assignToReference>
+            <operator>Assign</operator>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>SPT_Total_Minutes</assignToReference>
+            <operator>Assign</operator>
+        </assignmentItems>
+        <connector>
+            <isGoTo>true</isGoTo>
+            <targetReference>Each_Quaterly_Active_Account</targetReference>
+        </connector>
+    </assignments>
+    <assignments>
+        <description>Add the minutes from each timesheet to the  Lead minutes variable</description>
+        <name>Lead</name>
+        <label>Lead</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <assignmentItems>
+            <assignToReference>Lead_Total_Minutes</assignToReference>
+            <operator>Add</operator>
+            <value>
+                <elementReference>Each_Monthly_Timseheet_found.Minutes__c</elementReference>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>Each_Monthly_Timseheet_found</targetReference>
+        </connector>
+    </assignments>
+    <assignments>
+        <description>Add the minutes from each timesheet to the Lead minutes variable</description>
+        <name>Quarterly_Lead</name>
+        <label>Quarterly Lead</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <assignmentItems>
+            <assignToReference>Lead_Total_Minutes</assignToReference>
+            <operator>Add</operator>
+            <value>
+                <elementReference>Each_Quarterly_Timseheets_found.Minutes__c</elementReference>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>Each_Quarterly_Timseheets_found</targetReference>
+        </connector>
+    </assignments>
+    <assignments>
+        <description>Add the minutes from each timesheet to the SPT total minutes variable</description>
+        <name>Quarterly_SPT</name>
+        <label>Quarterly SPT</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <assignmentItems>
+            <assignToReference>SPT_Total_Minutes</assignToReference>
+            <operator>Add</operator>
+            <value>
+                <elementReference>Each_Quarterly_Timseheets_found.Minutes__c</elementReference>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>Each_Quarterly_Timseheets_found</targetReference>
+        </connector>
+    </assignments>
+    <assignments>
+        <description>Add the minutes from each timesheet to the SPT total minutes variable</description>
+        <name>SPT</name>
+        <label>SPT</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <assignmentItems>
+            <assignToReference>SPT_Total_Minutes</assignToReference>
+            <operator>Add</operator>
+            <value>
+                <elementReference>Each_Monthly_Timseheet_found.Minutes__c</elementReference>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>Each_Monthly_Timseheet_found</targetReference>
+        </connector>
+    </assignments>
+    <decisions>
+        <description>Verify whether the Timesheets Resource Type field is set to SPT Team or Lead Team.</description>
+        <name>Check_if_the_Timesheet_Resource_type</name>
+        <label>Check if the Timesheet Resource type</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <defaultConnector>
+            <targetReference>Each_Monthly_Timseheet_found</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
+        <rules>
+            <name>SPT_Team</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>Each_Monthly_Timseheet_found.Resource_Type__c</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>SPT Team</stringValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>SPT</targetReference>
+            </connector>
+            <label>SPT Team</label>
+        </rules>
+        <rules>
+            <name>Lead_Team</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>Each_Monthly_Timseheet_found.Resource_Type__c</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>Team Lead</stringValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Lead</targetReference>
+            </connector>
+            <label>Lead Team</label>
+        </rules>
+    </decisions>
+    <decisions>
+        <description>Check whether the Billing Term is Monthly or Quarterly, and the Schedule should be true</description>
+        <name>Check_the_Billing_Term_Monthly_or_Quarterly</name>
+        <label>Check the Billing Term Monthly or Quarterly</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <defaultConnector>
+            <targetReference>loop_each_contract</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
+        <rules>
+            <name>Monthly</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>loop_each_contract.Billing_Terms__c</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>Monthly</stringValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>loop_each_contract.Schedule__c</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <booleanValue>true</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Get_each_child_Accounts</targetReference>
+            </connector>
+            <label>Monthly</label>
+        </rules>
+        <rules>
+            <name>Quarterly</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>loop_each_contract.Billing_Terms__c</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>Quarterly</stringValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>loop_each_contract.Schedule__c</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <booleanValue>true</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Get_each_child_Accountss</targetReference>
+            </connector>
+            <label>Quarterly</label>
+        </rules>
+    </decisions>
+    <decisions>
+        <description>Verify whether the Timesheets Resource Type field is set to SPT Team or Lead Team.</description>
+        <name>f_Check_if_the_Quarterly_Timesheet_Resource_type</name>
+        <label>Check if the Quarterly Timesheet Resource type</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <defaultConnector>
+            <targetReference>Each_Quarterly_Timseheets_found</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
+        <rules>
+            <name>Quarterly_SPT_Team</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>Each_Quarterly_Timseheets_found.Resource_Type__c</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>SPT Team</stringValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Quarterly_SPT</targetReference>
+            </connector>
+            <label>Quarterly SPT Team</label>
+        </rules>
+        <rules>
+            <name>Quarterly_Lead_Team</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>Each_Quarterly_Timseheets_found.Resource_Type__c</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>Team Lead</stringValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Quarterly_Lead</targetReference>
+            </connector>
+            <label>Quarterly Lead Team</label>
+        </rules>
+    </decisions>
+    <decisions>
+        <description>Verify whether the timesheets records are available</description>
+        <name>If_Quarterly_Timesheet_Records_Found</name>
+        <label>If Quarterly Timesheet Records Found?</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <defaultConnector>
+            <targetReference>Each_Quaterly_Active_Account</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
+        <rules>
+            <name>Yes</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>Get_Each_Quarterly_Timesheets</leftValueReference>
+                <operator>IsNull</operator>
+                <rightValue>
+                    <booleanValue>false</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Each_Quarterly_Timseheets_found</targetReference>
+            </connector>
+            <label>Yes</label>
+        </rules>
+    </decisions>
+    <decisions>
+        <description>Verify whether the timesheets records are available</description>
+        <name>If_Timesheet_Records_Found</name>
+        <label>If Timesheet Records Found?</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <defaultConnector>
+            <targetReference>Each_Active_Monthly_Account</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
+        <rules>
+            <name>Yess</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>Get_Each_Monthly_Account_Timesheets</leftValueReference>
+                <operator>IsNull</operator>
+                <rightValue>
+                    <booleanValue>false</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Each_Monthly_Timseheet_found</targetReference>
+            </connector>
+            <label>Yess</label>
+        </rules>
+    </decisions>
+    <environments>Default</environments>
+    <formulas>
+        <name>InvoiceType</name>
+        <dataType>String</dataType>
+        <expression>IF(DAY({!$Flow.CurrentDate})=29, &quot;Month&quot;,&quot;Quarter&quot;)</expression>
+    </formulas>
+    <formulas>
+        <name>Lead_TotalHours</name>
+        <dataType>String</dataType>
+        <expression>TEXT(FLOOR({!Lead_Total_Minutes} / 60)) &amp; &quot; Hours &quot; &amp; TEXT(MOD({!Lead_Total_Minutes}, 60)) &amp; &quot; Minutes&quot;</expression>
+    </formulas>
+    <formulas>
+        <name>SPT_TotalHours</name>
+        <dataType>String</dataType>
+        <expression>TEXT(FLOOR({!SPT_Total_Minutes} / 60)) &amp; &quot; Hours &quot; &amp; TEXT(MOD({!SPT_Total_Minutes}, 60)) &amp; &quot; Minutes&quot;</expression>
+    </formulas>
+    <formulas>
+        <name>Subject</name>
+        <dataType>String</dataType>
+        <expression>&quot;Timesheet report - Invoicing - &quot; &amp;
+IF(
+    {!InvoiceType} = &quot;Month&quot;,
+    
+    /* Case 1: Monthly → last month name */
+    CASE(
+        MONTH(ADDMONTHS(TODAY(), -1)),
+        1, &quot;January&quot;,
+        2, &quot;February&quot;,
+        3, &quot;March&quot;,
+        4, &quot;April&quot;,
+        5, &quot;May&quot;,
+        6, &quot;June&quot;,
+        7, &quot;July&quot;,
+        8, &quot;August&quot;,
+        9, &quot;September&quot;,
+        10, &quot;October&quot;,
+        11, &quot;November&quot;,
+        12, &quot;December&quot;,
+        &quot;Unknown&quot;
+    ),
+
+    /* Case 2: Quarterly → Qx(MMM – MMM) */
+    CASE(
+        CEILING(MONTH(ADDMONTHS(TODAY(), -1)) / 3),
+        1, &quot;Q1 (Jan - Mar)&quot;,
+        2, &quot;Q2 (Apr - Jun)&quot;,
+        3, &quot;Q3 (Jul - Sep)&quot;,
+        4, &quot;Q4 (Oct - Dec)&quot;,
+        &quot;Unknown&quot;
+    )
+) &amp;
+&quot;  &quot; &amp; {!InvoiceType}</expression>
+    </formulas>
+    <formulas>
+        <name>TableMonthlyTimseheetRows</name>
+        <dataType>String</dataType>
+        <expression>&apos;&lt;tr&gt;&apos; +
+   &apos;&lt;td style=&quot;border: 1px solid black; text-align: center;&quot;&gt;&apos; + TEXT({!RowNumber}) + &apos;&lt;/td&gt;&apos; +
+&apos;&lt;td style=&quot;border: 1px solid black;&quot;&gt;&apos; + {!Each_Active_Monthly_Account.Name} + &apos;&lt;/td&gt;&apos; +
+    &apos;&lt;td style=&quot;border: 1px solid black;&quot;&gt;&apos; + {!SPT_TotalHours} + &apos;&lt;/td&gt;&apos; +
+    &apos;&lt;td style=&quot;border: 1px solid black;&quot;&gt;&apos; + {!Lead_TotalHours} + &apos;&lt;/td&gt;&apos; +
+&apos;&lt;/tr&gt;&apos;</expression>
+    </formulas>
+    <formulas>
+        <name>TableQuarterlyTimesheetRow</name>
+        <dataType>String</dataType>
+        <expression>&apos;&lt;tr&gt;&apos; +
+   &apos;&lt;td style=&quot;border: 1px solid black; text-align: center;&quot;&gt;&apos; + TEXT({!RowNumber}) + &apos;&lt;/td&gt;&apos; +
+&apos;&lt;td style=&quot;border: 1px solid black;&quot;&gt;&apos; + {!Each_Quaterly_Active_Account.Name} + &apos;&lt;/td&gt;&apos; +
+    &apos;&lt;td style=&quot;border: 1px solid black;&quot;&gt;&apos; + {!SPT_TotalHours} + &apos;&lt;/td&gt;&apos; +
+    &apos;&lt;td style=&quot;border: 1px solid black;&quot;&gt;&apos; + {!Lead_TotalHours} + &apos;&lt;/td&gt;&apos; +
+&apos;&lt;/tr&gt;&apos;</expression>
+    </formulas>
+    <formulas>
+        <name>varPrevMonthEnd</name>
+        <dataType>Date</dataType>
+        <expression>DATE( YEAR(TODAY()), MONTH(TODAY()), 1 ) - 1</expression>
+    </formulas>
+    <formulas>
+        <name>varPrevMonthStart</name>
+        <dataType>Date</dataType>
+        <expression>DATE( YEAR(TODAY()), MONTH(TODAY()) - 1, 1 )</expression>
+    </formulas>
+    <formulas>
+        <name>varPrevQuarterEnd</name>
+        <dataType>Date</dataType>
+        <expression>CASE(
+    CEILING(MONTH(TODAY()) / 3) - 1,
+    0, DATE(YEAR(TODAY()) - 1, 12, 31), /* If current Q1 → previous Q4 */
+    1, DATE(YEAR(TODAY()), 3, 31),      /* If current Q2 → previous Q1 */
+    2, DATE(YEAR(TODAY()), 6, 30),      /* If current Q3 → previous Q2 */
+    3, DATE(YEAR(TODAY()), 9, 30),      /* If current Q4 → previous Q3 */
+    NULL
+)</expression>
+    </formulas>
+    <formulas>
+        <name>varPrevQuarterStart</name>
+        <dataType>Date</dataType>
+        <expression>CASE(
+    CEILING(MONTH(TODAY()) / 3) - 1,
+    0, DATE(YEAR(TODAY()) - 1, 10, 1),  /* If current Q1 → previous Q4 */
+    1, DATE(YEAR(TODAY()), 1, 1),       /* If current Q2 → previous Q1 */
+    2, DATE(YEAR(TODAY()), 4, 1),       /* If current Q3 → previous Q2 */
+    3, DATE(YEAR(TODAY()), 7, 1),       /* If current Q4 → previous Q3 */
+    NULL
+)</expression>
+    </formulas>
+    <interviewLabel>Monthly Timseheet Report Au {!$Flow.CurrentDateTime}</interviewLabel>
+    <label>Monthly Timesheet Report</label>
+    <loops>
+        <description>Loops through each Active account</description>
+        <name>Each_Active_Monthly_Account</name>
+        <label>Each Active Monthly Account</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <collectionReference>Get_each_child_Accounts</collectionReference>
+        <iterationOrder>Asc</iterationOrder>
+        <nextValueConnector>
+            <targetReference>Get_Each_Monthly_Account_Timesheets</targetReference>
+        </nextValueConnector>
+        <noMoreValuesConnector>
+            <targetReference>loop_each_contract</targetReference>
+        </noMoreValuesConnector>
+    </loops>
+    <loops>
+        <description>Loops through each Timesheets</description>
+        <name>Each_Monthly_Timseheet_found</name>
+        <label>Each Monthly Timseheet found.</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <collectionReference>Get_Each_Monthly_Account_Timesheets</collectionReference>
+        <iterationOrder>Asc</iterationOrder>
+        <nextValueConnector>
+            <targetReference>Check_if_the_Timesheet_Resource_type</targetReference>
+        </nextValueConnector>
+        <noMoreValuesConnector>
+            <targetReference>Add_Rows_to_the_table</targetReference>
+        </noMoreValuesConnector>
+    </loops>
+    <loops>
+        <description>Loops through each Timesheets</description>
+        <name>Each_Quarterly_Timseheets_found</name>
+        <label>Each Quarterly Timseheets found.</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <collectionReference>Get_Each_Quarterly_Timesheets</collectionReference>
+        <iterationOrder>Asc</iterationOrder>
+        <nextValueConnector>
+            <targetReference>f_Check_if_the_Quarterly_Timesheet_Resource_type</targetReference>
+        </nextValueConnector>
+        <noMoreValuesConnector>
+            <targetReference>Add_Row_to_the_table</targetReference>
+        </noMoreValuesConnector>
+    </loops>
+    <loops>
+        <description>Loops through each Active account</description>
+        <name>Each_Quaterly_Active_Account</name>
+        <label>Each Quarterly Active Account</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <collectionReference>Get_each_child_Accountss</collectionReference>
+        <iterationOrder>Asc</iterationOrder>
+        <nextValueConnector>
+            <targetReference>Get_Each_Quarterly_Timesheets</targetReference>
+        </nextValueConnector>
+        <noMoreValuesConnector>
+            <targetReference>loop_each_contract</targetReference>
+        </noMoreValuesConnector>
+    </loops>
+    <loops>
+        <description>Loops through each Active contract</description>
+        <name>loop_each_contract</name>
+        <label>loop each contract</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <collectionReference>Get_Active_Contracts</collectionReference>
+        <iterationOrder>Asc</iterationOrder>
+        <nextValueConnector>
+            <targetReference>Check_the_Billing_Term_Monthly_or_Quarterly</targetReference>
+        </nextValueConnector>
+        <noMoreValuesConnector>
+            <targetReference>Close_the_Table</targetReference>
+        </noMoreValuesConnector>
+    </loops>
+    <processMetadataValues>
+        <name>BuilderType</name>
+        <value>
+            <stringValue>LightningFlowBuilder</stringValue>
+        </value>
+    </processMetadataValues>
+    <processMetadataValues>
+        <name>CanvasMode</name>
+        <value>
+            <stringValue>AUTO_LAYOUT_CANVAS</stringValue>
+        </value>
+    </processMetadataValues>
+    <processMetadataValues>
+        <name>OriginBuilderType</name>
+        <value>
+            <stringValue>LightningFlowBuilder</stringValue>
+        </value>
+    </processMetadataValues>
+    <processType>AutoLaunchedFlow</processType>
+    <recordLookups>
+        <description>Get all Activate Contract</description>
+        <name>Get_Active_Contracts</name>
+        <label>Get Active Contracts</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
+        <connector>
+            <targetReference>Add_columns_to_the_table</targetReference>
+        </connector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>Parent_ID__c</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>$Record.Id</elementReference>
+            </value>
+        </filters>
+        <filters>
+            <field>Status</field>
+            <operator>EqualTo</operator>
+            <value>
+                <stringValue>Activated</stringValue>
+            </value>
+        </filters>
+        <getFirstRecordOnly>false</getFirstRecordOnly>
+        <object>Contract</object>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </recordLookups>
+    <recordLookups>
+        <description>Get all the active accounts only</description>
+        <name>Get_each_child_Accounts</name>
+        <label>Get each child Accounts</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
+        <connector>
+            <targetReference>Each_Active_Monthly_Account</targetReference>
+        </connector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>Active__c</field>
+            <operator>EqualTo</operator>
+            <value>
+                <booleanValue>true</booleanValue>
+            </value>
+        </filters>
+        <filters>
+            <field>ParentId</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>$Record.Id</elementReference>
+            </value>
+        </filters>
+        <filters>
+            <field>Id</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>loop_each_contract.AccountId</elementReference>
+            </value>
+        </filters>
+        <getFirstRecordOnly>false</getFirstRecordOnly>
+        <object>Account</object>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </recordLookups>
+    <recordLookups>
+        <description>Get all the active accounts only</description>
+        <name>Get_each_child_Accountss</name>
+        <label>Get each child Accounts</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
+        <connector>
+            <targetReference>Each_Quaterly_Active_Account</targetReference>
+        </connector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>Active__c</field>
+            <operator>EqualTo</operator>
+            <value>
+                <booleanValue>true</booleanValue>
+            </value>
+        </filters>
+        <filters>
+            <field>ParentId</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>$Record.Id</elementReference>
+            </value>
+        </filters>
+        <filters>
+            <field>Id</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>loop_each_contract.AccountId</elementReference>
+            </value>
+        </filters>
+        <getFirstRecordOnly>false</getFirstRecordOnly>
+        <object>Account</object>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </recordLookups>
+    <recordLookups>
+        <description>Retrieve all timesheets related to the Monthly timesheet, based on the client Org name.</description>
+        <name>Get_Each_Monthly_Account_Timesheets</name>
+        <label>Get Each Monthly Account Timesheets</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
+        <connector>
+            <targetReference>If_Timesheet_Records_Found</targetReference>
+        </connector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>Client_org_Name__c</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>Each_Active_Monthly_Account.Id</elementReference>
+            </value>
+        </filters>
+        <filters>
+            <field>Date__c</field>
+            <operator>GreaterThanOrEqualTo</operator>
+            <value>
+                <elementReference>varPrevMonthStart</elementReference>
+            </value>
+        </filters>
+        <filters>
+            <field>Date__c</field>
+            <operator>LessThanOrEqualTo</operator>
+            <value>
+                <elementReference>varPrevMonthEnd</elementReference>
+            </value>
+        </filters>
+        <getFirstRecordOnly>false</getFirstRecordOnly>
+        <object>TimeSheet__c</object>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </recordLookups>
+    <recordLookups>
+        <description>Retrieve all timesheets related to the quarterly timesheet, based on the client Org name.</description>
+        <name>Get_Each_Quarterly_Timesheets</name>
+        <label>Get Each  Quarterly Timesheets</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
+        <connector>
+            <targetReference>If_Quarterly_Timesheet_Records_Found</targetReference>
+        </connector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>Client_org_Name__c</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>Each_Quaterly_Active_Account.Id</elementReference>
+            </value>
+        </filters>
+        <filters>
+            <field>Date__c</field>
+            <operator>GreaterThanOrEqualTo</operator>
+            <value>
+                <elementReference>varPrevQuarterStart</elementReference>
+            </value>
+        </filters>
+        <filters>
+            <field>Date__c</field>
+            <operator>LessThanOrEqualTo</operator>
+            <value>
+                <elementReference>varPrevQuarterEnd</elementReference>
+            </value>
+        </filters>
+        <getFirstRecordOnly>false</getFirstRecordOnly>
+        <object>TimeSheet__c</object>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </recordLookups>
+    <start>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <connector>
+            <targetReference>Get_Active_Contracts</targetReference>
+        </connector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>Ac_Parent_id__c</field>
+            <operator>EqualTo</operator>
+            <value>
+                <booleanValue>true</booleanValue>
+            </value>
+        </filters>
+        <object>Account</object>
+        <schedule>
+            <frequency>Once</frequency>
+            <startDate>2025-08-29</startDate>
+            <startTime>18:30:00.000Z</startTime>
+        </schedule>
+        <triggerType>Scheduled</triggerType>
+    </start>
+    <status>Active</status>
+    <textTemplates>
+        <name>emailbody</name>
+        <isViewedAsPlainText>false</isViewedAsPlainText>
+        <text>&lt;p&gt;Hi,&lt;/p&gt;&lt;p&gt;The table below shows the Last {!InvoiceType} SPT Team &amp;amp; Team Lead Total working Hours.&lt;/p&gt;&lt;p&gt;{!TableTimesheet}&lt;/p&gt;&lt;p&gt;Best regards,&lt;/p&gt;&lt;p&gt;Leadership Team&lt;/p&gt;</text>
+    </textTemplates>
+    <variables>
+        <name>Lead_Total_Minutes</name>
+        <dataType>Number</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+        <scale>0</scale>
+    </variables>
+    <variables>
+        <name>RowNumber</name>
+        <dataType>Number</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+        <scale>0</scale>
+    </variables>
+    <variables>
+        <name>SPT_Total_Minutes</name>
+        <dataType>Number</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+        <scale>2</scale>
+    </variables>
+    <variables>
+        <name>TableTimesheet</name>
+        <dataType>String</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+        <value>
+            <stringValue>&lt;table style=&quot;width:100%; border: 1px solid black;&quot;&gt;</stringValue>
+        </value>
+    </variables>
+    <variables>
+        <name>TableTimesheetColumns</name>
+        <dataType>String</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+        <value>
+            <stringValue>&lt;tr&gt;   &lt;th style=&quot;border: 1px solid black;&quot;&gt;S.No&lt;/th&gt;   &lt;th style=&quot;border: 1px solid black;&quot;&gt;Client Org Name&lt;/th&gt;   &lt;th style=&quot;border: 1px solid black;&quot;&gt;SPT Team&lt;/th&gt;   &lt;th style=&quot;border: 1px solid black;&quot;&gt;Team Lead &lt;/th&gt; &lt;/tr&gt;</stringValue>
+        </value>
+    </variables>
+</Flow>

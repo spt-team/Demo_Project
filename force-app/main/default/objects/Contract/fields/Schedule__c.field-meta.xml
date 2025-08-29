@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Schedule__c</fullName>
+    <formula>OR(
+    /* Case 1: Monthly invoices → 2nd day of each month */
+    AND(
+        ISPICKVAL( Billing_Terms__c , &quot;Monthly&quot;),
+        DAY(TODAY()) = 29
+    ),
+
+    /* Case 2: Quarterly invoices → 3 days after quarter end */
+    AND(
+        ISPICKVAL(Billing_Terms__c, &quot;Quarterly&quot;),
+        OR(
+            AND(MONTH(TODAY()) = 1, DAY(TODAY()) = 3),   /* Jan 3 (Q4 end) */
+            AND(MONTH(TODAY()) = 4, DAY(TODAY()) = 3),   /* Apr 3 (Q1 end) */
+            AND(MONTH(TODAY()) = 7, DAY(TODAY()) = 3),   /* Jul 3 (Q2 end) */
+            AND(MONTH(TODAY()) = 10, DAY(TODAY()) = 3)   /* Oct 3 (Q3 end) */
+        )
+    )
+)</formula>
+    <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+    <label>Schedule</label>
+    <trackHistory>false</trackHistory>
+    <type>Checkbox</type>
+</CustomField>
