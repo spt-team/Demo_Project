@@ -28,4 +28,18 @@
         <shortDescription>spt id</shortDescription>
         <value>001U700000OYwqcIAD</value>
     </labels>
+    <labels>
+        <fullName>Founder_Email</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Founder Email</shortDescription>
+        <value>muthuraman6112001@gmail.com</value>
+    </labels>
+    <labels>
+        <fullName>TeamLead_Email_Recipients</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>TeamLead Email Recipients</shortDescription>
+        <value>muthu@sweetpotatotec.com, priya@sweetpotatotec.com</value>
+    </labels>
 </CustomLabels>
